@@ -382,20 +382,25 @@ if (isAwesome == YES) // Never do this.
 
 ## Singletons
 
-Singleton objects should use a thread-safe pattern for creating their shared instance.
+Singleton objects should use a thread-safe pattern for creating their shared instance. Use "SynthesizeSingleton.h" to generate a singleton.
+**Example .h file:**
 ```objc
-+ (instancetype)sharedInstance 
-{
-   static id sharedInstance = nil;
+#import <Foundation/Foundation.h>
 
-   static dispatch_once_t onceToken;
-   dispatch_once(&onceToken, ^
-   {
-      sharedInstance = [[self alloc] init];
-   });
+@interface Internet : NSObject
 
-   return sharedInstance;
-}
++ (Internet *)sharedInstance;
+
+@end
+```
+**Example .m file:**
+```objc
+#import "Internet.h"
+#import "SynthesizeSingleton.h"
+
+@implementation Internet
+SYNTHESIZE_SINGLETON_FOR_CLASS(Internet)
+@end
 ```
 This will prevent [possible and sometimes prolific crashes](http://cocoasamurai.blogspot.com/2011/04/singletons-your-doing-them-wrong.html).
 
